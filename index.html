@@ -75,7 +75,7 @@
   .q { padding: 22px 0 22px; border-top: 1px solid var(--line); display: block; }
   .q:first-of-type { border-top: 0; }
   .q legend, .q label.title { font-weight: 600; font-size: 1.02rem; padding: 0; margin: 0 0 12px; display: block; }
-  .q .hint { display: block; font-weight: 400; color: var(--ink-soft); font-size: .92rem; margin-top: 2px; }
+  .q .hint { display: block; font-weight: 400; font-style: italic; color: var(--ink-soft); font-size: .92rem; margin-top: 2px; }
   fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
   fieldset.q legend { float: left; width: 100%; }
   fieldset.q legend + * { clear: both; }
@@ -192,14 +192,14 @@ const SINK = {
 /* 2) Concepts: keep this order identical to CONCEPT_SHORTS in the data-sink script. */
 const CONCEPTS = [
   { short: "Base CTRL",  name: "Base CTRL 4-Way Complexion Transformer",    img: "images/base-ctrl.jpg" },
-  { short: "Lip Eraser", name: "Lip Eraser — Lip Color Corrector",          img: "images/lip-eraser.jpg" },
-  { short: "CTRL+DEL",   name: "CTRL+DEL — Makeup Remover Mist",            img: "images/ctrl-del.jpg" },
-  { short: "Vinyl Lock", name: "Vinyl Lock — Lip Bullet",                   img: "images/vinyl-lock.jpg" },
-  { short: "Mix CTRL",   name: "Mix CTRL — Multi-Use Makeup Mixing Liquid", img: "images/mix-ctrl.jpg" }
+  { short: "Lip Eraser", name: "Lip Eraser - Lip Color Corrector",          img: "images/lip-eraser.jpg" },
+  { short: "CTRL+DEL",   name: "CTRL+DEL - Makeup Remover Mist",            img: "images/ctrl-del.jpg" },
+  { short: "Vinyl Lock", name: "Vinyl Lock - Lip Bullet",                   img: "images/vinyl-lock.jpg" },
+  { short: "Mix CTRL",   name: "Mix CTRL - Multi-Use Makeup Mixing Liquid", img: "images/mix-ctrl.jpg" }
 ];
 
 /* 3) Answer options (stored values match Version 1). */
-const AGE = ["Under 18", "18–24", "25–30", "31–35", "Above 35"];
+const AGE = ["Under 18", "18-24", "25-30", "31-35", "Above 35"];
 const GENDER = ["Female", "Male"];
 const FREQ = ["Every day", "A few times a week", "Once a week", "Less than once a week", "I don't use makeup"];
 const HEARD = ["Yes, exactly like this", "Yes, something similar", "No, never"];
@@ -299,7 +299,7 @@ function renderIntro() {
       <p>Hi! Thank you for taking the time to fill out this survey 💗 We’re exploring some new product ideas and would love to hear what you think!</p>
       <p>You’ll be shown several product concepts, each with an image and a short description, followed by a few questions. Just share your honest thoughts based on each concept.</p>
       <p>There are no right or wrong answers, so feel free to share what you really think!</p>
-      <p>The survey will take around 10–15 minutes, and all responses will remain anonymous. Thank you for helping us! 💕</p>
+      <p>The survey will take around 10-15 minutes, and all responses will remain anonymous. Thank you for helping us! 💕</p>
     </div>
     <div class="nav"><button class="primary" id="next">Start the survey</button></div>`;
   document.getElementById("next").onclick = () => go(1);
