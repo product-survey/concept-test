@@ -271,7 +271,7 @@ function scaleGroup(id, title, low, high, value) {
 function textGroup(id, title, value) {
   return `<div class="q" data-q="${id}" data-required="1">
     <label class="title" for="${id}">${esc(title)} <span class="req" aria-hidden="true">*</span>
-      <span class="hint">Feel free to share your thoughts as much as you’d like ✨ If this product feels relevant to you, a “-” is totally fine.</span></label>
+      <span class="hint">Feel free to share your thoughts as much as you’d like! If this product feels relevant to you, you can write “-”.</span></label>
     <textarea id="${id}" name="${id}" required>${esc(value || "")}</textarea>
     <p class="error-msg">Write a short answer to continue.</p>
   </div>`;
