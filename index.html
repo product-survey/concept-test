@@ -204,6 +204,7 @@ const GENDER = ["Female", "Male"];
 const FREQ = ["Every day", "A few times a week", "Once a week", "Less than once a week", "I don't use makeup"];
 const HEARD = ["Yes, exactly like this", "Yes, something similar", "No, never"];
 const BUY = ["Definitely would buy", "Definitely would not buy"];
+const MIN_TEXT = 1; // minimum characters for the open answer
 
 /* ───────────────────────────────────────────────────────────── */
 
@@ -268,9 +269,11 @@ function scaleGroup(id, title, low, high, value) {
   </fieldset>`;
 }
 function textGroup(id, title, value) {
-  return `<div class="q" data-q="${id}">
-    <label class="title" for="${id}">${esc(title)}<span class="hint">Optional</span></label>
-    <textarea id="${id}" name="${id}">${esc(value || "")}</textarea>
+  return `<div class="q" data-q="${id}" data-required="1">
+    <label class="title" for="${id}">${esc(title)} <span class="req" aria-hidden="true">*</span>
+      <span class="hint">Feel free to share your thoughts as much as you’d like ✨ If this product feels relevant to you, a “-” is totally fine.</span></label>
+    <textarea id="${id}" name="${id}" required>${esc(value || "")}</textarea>
+    <p class="error-msg">Write a short answer to continue.</p>
   </div>`;
 }
 
@@ -372,11 +375,12 @@ function bindInputs(onChange) {
 function validate() {
   let first = null;
   app.querySelectorAll('.q[data-required="1"]').forEach(q => {
-    const ok = q.querySelector("input:checked");
+    const ta = q.querySelector("textarea");
+    const ok = ta ? ta.value.trim().length >= MIN_TEXT : q.querySelector("input:checked");
     q.classList.toggle("missing", !ok);
     if (!ok && !first) first = q;
   });
-  if (first) { first.scrollIntoView({ behavior: "smooth", block: "center" }); first.querySelector("input").focus({ preventScroll: true }); }
+  if (first) { first.scrollIntoView({ behavior: "smooth", block: "center" }); first.querySelector("input, textarea").focus({ preventScroll: true }); }
   return !first;
 }
 
