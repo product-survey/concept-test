@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>New Product Concept Survey</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #FAF7FC;
+    --surface: #FFFFFF;
+    --mist: #F1EAF8;
+    --line: #DCCDEE;
+    --ink: #2B1740;
+    --ink-soft: #6E5C80;
+    --violet: #6A3D9A;
+    --violet-ink: #FFFFFF;
+    --pearl-hi: #FFFFFF;
+    --pearl: #F3ECF9;
+    --pearl-lo: #CDB9E6;
+    --error: #B3261E;
+    --serif: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --sans: "Figtree", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #1A1022; --surface: #24172F; --mist: #2E2039; --line: #47355A;
+      --ink: #F3ECF9; --ink-soft: #BBA8CF; --violet: #B48CE6; --violet-ink: #1A1022;
+      --pearl-hi: #5A4870; --pearl: #382A47; --pearl-lo: #2A1E36; --error: #FF8A80;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #1A1022; --surface: #24172F; --mist: #2E2039; --line: #47355A;
+    --ink: #F3ECF9; --ink-soft: #BBA8CF; --violet: #B48CE6; --violet-ink: #1A1022;
+    --pearl-hi: #5A4870; --pearl: #382A47; --pearl-lo: #2A1E36; --error: #FF8A80;
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .progress { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; height: 4px; background: var(--mist); }
+  .progress > span { display: block; height: 100%; width: 0; background: var(--violet); transition: width .35s ease; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+  main { max-width: 620px; margin: 0 auto; padding: 28px 20px 48px; }
+
+  h1, h2 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; margin: 0; }
+  h1 { font-size: clamp(2.1rem, 7vw, 2.9rem); line-height: 1.08; font-style: italic; }
+  h2 { font-size: 1.65rem; line-height: 1.2; }
+  .brand { font-family: var(--serif); font-size: 1rem; color: var(--ink-soft); margin: 0 0 18px; }
+  .lede p { margin: 0 0 14px; max-width: 60ch; }
+  .step-count { color: var(--ink-soft); font-size: .95rem; margin: 0 0 6px; }
+
+  figure { margin: 20px -20px 8px; }
+  figure a { display: block; }
+  figure img { display: block; width: 100%; max-width: 100%; height: auto; background: var(--mist); }
+  figcaption { font-size: .88rem; color: var(--ink-soft); padding: 6px 20px 0; }
+  @media (min-width: 660px) {
+    figure { margin: 22px 0 8px; }
+    figure img { border-radius: 14px; }
+    figcaption { padding-left: 0; }
+  }
+
+  .q { padding: 22px 0 22px; border-top: 1px solid var(--line); display: block; }
+  .q:first-of-type { border-top: 0; }
+  .q legend, .q label.title { font-weight: 600; font-size: 1.02rem; padding: 0; margin: 0 0 12px; display: block; }
+  .q .hint { display: block; font-weight: 400; color: var(--ink-soft); font-size: .92rem; margin-top: 2px; }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  fieldset.q legend { float: left; width: 100%; }
+  fieldset.q legend + * { clear: both; }
+  .req { color: var(--violet); }
+
+  .options { display: grid; gap: 8px; }
+  .opt { position: relative; }
+  .opt input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .opt span {
+    display: block; padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px;
+    background: var(--surface); transition: border-color .15s, background .15s;
+  }
+  .opt input:checked + span { border-color: var(--violet); background: var(--mist); box-shadow: inset 0 0 0 1px var(--violet); }
+  .opt input:focus-visible + span { outline: 3px solid var(--violet); outline-offset: 2px; }
+
+  /* The pearl scale */
+  .scale { display: flex; justify-content: space-between; gap: 8px; max-width: 360px; }
+  .pearl { position: relative; }
+  .pearl input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .pearl span {
+    display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%;
+    font-family: var(--serif); font-size: 1.2rem; color: var(--ink);
+    background: radial-gradient(circle at 34% 28%, var(--pearl-hi) 0 14%, var(--pearl) 46%, var(--pearl-lo) 100%);
+    box-shadow: 0 1px 0 var(--line), inset 0 -2px 6px rgba(106, 61, 154, .12);
+    transition: transform .15s ease, background .2s ease;
+  }
+  .pearl input:checked + span {
+    color: var(--violet-ink); transform: scale(1.08);
+    background: radial-gradient(circle at 34% 28%, #E9DBFA 0 10%, var(--violet) 55%, #4B2475 100%);
+  }
+  .pearl input:focus-visible + span { outline: 3px solid var(--violet); outline-offset: 3px; }
+  .scale-ends { display: flex; justify-content: space-between; max-width: 360px; font-size: .88rem; color: var(--ink-soft); margin-top: 8px; }
+
+  textarea {
+    width: 100%; min-height: 96px; padding: 12px 14px; font: inherit; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px; resize: vertical;
+  }
+  textarea:focus-visible { outline: 3px solid var(--violet); outline-offset: 1px; border-color: var(--violet); }
+
+  .error-msg { color: var(--error); font-size: .92rem; margin-top: 8px; display: none; }
+  .q.missing .error-msg { display: block; }
+
+  .nav { display: flex; gap: 12px; justify-content: space-between; align-items: center; margin-top: 28px; }
+  button {
+    font: inherit; font-weight: 600; border-radius: 999px; padding: 14px 26px; cursor: pointer;
+    border: 1px solid transparent; min-height: 48px;
+  }
+  .primary { background: var(--violet); color: var(--violet-ink); margin-left: auto; }
+  .ghost { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+  button:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+  button[disabled] { opacity: .6; cursor: progress; }
+
+  .done { text-align: left; padding-top: 12vh; }
+  .done p { max-width: 46ch; color: var(--ink-soft); }
+  .notice { background: var(--mist); border-radius: 12px; padding: 14px 16px; margin-top: 18px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="progress" aria-hidden="true"><span id="bar"></span></div>
+<main id="app" aria-live="polite"></main>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   1) SINK: replace this whole block with the one from the
+      "Paste into index.html" tab (made by setupDataSink()).
+   ───────────────────────────────────────────────────────────── */
+const SINK = {
+  "action": "https://docs.google.com/forms/d/e/1FAIpQLSdi0Aym0DiMEmpz5R2uYjUvQnh9fOvnUROnxjQach1dsQBVxg/formResponse",
+  "fields": {
+    "respondent_id": "entry.535061661",
+    "started_at": "entry.131241073",
+    "submitted_at": "entry.2103270136",
+    "concept_order": "entry.1352449352",
+    "age": "entry.1668052696",
+    "gender": "entry.164784902",
+    "frequency": "entry.100243181",
+    "c0.position": "entry.1272427428",
+    "c0.heard": "entry.220803977",
+    "c0.relevance": "entry.204416882",
+    "c0.why": "entry.1384019043",
+    "c0.interest": "entry.375112502",
+    "c0.buy": "entry.31352310",
+    "c1.position": "entry.681606182",
+    "c1.heard": "entry.443212226",
+    "c1.relevance": "entry.826691824",
+    "c1.why": "entry.301528219",
+    "c1.interest": "entry.584555997",
+    "c1.buy": "entry.1801501347",
+    "c2.position": "entry.1744429673",
+    "c2.heard": "entry.1371954152",
+    "c2.relevance": "entry.1970662021",
+    "c2.why": "entry.765874772",
+    "c2.interest": "entry.1650985135",
+    "c2.buy": "entry.1923539281",
+    "c3.position": "entry.551665493",
+    "c3.heard": "entry.1071810402",
+    "c3.relevance": "entry.772525733",
+    "c3.why": "entry.719434269",
+    "c3.interest": "entry.1498991132",
+    "c3.buy": "entry.150042566",
+    "c4.position": "entry.504839341",
+    "c4.heard": "entry.2034110602",
+    "c4.relevance": "entry.248096138",
+    "c4.why": "entry.797534549",
+    "c4.interest": "entry.1971664785",
+    "c4.buy": "entry.1333585238"
+  }
+};
+
+/* 2) Concepts: keep this order identical to CONCEPT_SHORTS in the data-sink script. */
+const CONCEPTS = [
+  { short: "Base CTRL",  name: "Base CTRL 4-Way Complexion Transformer",    img: "images/base-ctrl.jpg" },
+  { short: "Lip Eraser", name: "Lip Eraser — Lip Color Corrector",          img: "images/lip-eraser.jpg" },
+  { short: "CTRL+DEL",   name: "CTRL+DEL — Makeup Remover Mist",            img: "images/ctrl-del.jpg" },
+  { short: "Vinyl Lock", name: "Vinyl Lock — Lip Bullet",                   img: "images/vinyl-lock.jpg" },
+  { short: "Mix CTRL",   name: "Mix CTRL — Multi-Use Makeup Mixing Liquid", img: "images/mix-ctrl.jpg" }
+];
+
+/* 3) Answer options (stored values match Version 1). */
+const AGE = ["Under 18", "18–24", "25–30", "31–35", "Above 35"];
+const GENDER = ["Female", "Male"];
+const FREQ = ["Every day", "A few times a week", "Once a week", "Less than once a week", "I don't use makeup"];
+const HEARD = ["Yes, exactly like this", "Yes, something similar", "No, never"];
+const BUY = ["Definitely would buy", "Definitely would not buy"];
+
+/* ───────────────────────────────────────────────────────────── */
+
+const KEY = "mop-concept-test-v3";
+const app = document.getElementById("app");
+const bar = document.getElementById("bar");
+const N = CONCEPTS.length;
+
+function uid() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return "r-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+}
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function fresh() {
+  return {
+    id: uid(), started: new Date().toISOString(),
+    order: shuffle([...Array(N).keys()]),
+    step: 0, profile: {}, answers: {}, submitted: false
+  };
+}
+function load() {
+  try {
+    if (new URLSearchParams(location.search).has("reset")) localStorage.removeItem(KEY);
+    const s = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (s && Array.isArray(s.order) && s.order.length === N) return s;
+  } catch (e) {}
+  return fresh();
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+let state = load();
+
+/* Display text: typographic apostrophes; stored values stay as above. */
+const pretty = s => s.replace(/'/g, "’");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function choiceGroup(id, title, options, value, required = true) {
+  return `<fieldset class="q" data-q="${id}" ${required ? 'data-required="1"' : ""}>
+    <legend>${esc(title)}${required ? ' <span class="req" aria-hidden="true">*</span>' : ""}</legend>
+    <div class="options">${options.map(o => `
+      <label class="opt"><input type="radio" name="${id}" value="${esc(o)}" ${value === o ? "checked" : ""} ${required ? "required" : ""}>
+      <span>${esc(pretty(o))}</span></label>`).join("")}
+    </div>
+    <p class="error-msg">Choose an answer to continue.</p>
+  </fieldset>`;
+}
+function scaleGroup(id, title, low, high, value) {
+  return `<fieldset class="q" data-q="${id}" data-required="1">
+    <legend>${esc(title)} <span class="req" aria-hidden="true">*</span></legend>
+    <div class="scale" role="radiogroup">${[1, 2, 3, 4, 5].map(n => `
+      <label class="pearl"><input type="radio" name="${id}" value="${n}" ${String(value) === String(n) ? "checked" : ""} aria-label="${n}${n === 1 ? " — " + low : n === 5 ? " — " + high : ""}">
+      <span>${n}</span></label>`).join("")}
+    </div>
+    <div class="scale-ends"><span>${esc(low)}</span><span>${esc(high)}</span></div>
+    <p class="error-msg">Choose a number from 1 to 5 to continue.</p>
+  </fieldset>`;
+}
+function textGroup(id, title, value) {
+  return `<div class="q" data-q="${id}">
+    <label class="title" for="${id}">${esc(title)}<span class="hint">Optional</span></label>
+    <textarea id="${id}" name="${id}">${esc(value || "")}</textarea>
+  </div>`;
+}
+
+function setProgress() {
+  const total = N + 2; // about + concepts + done
+  const pct = state.step === 0 ? 0 : Math.min(100, Math.round((state.step / total) * 100));
+  bar.style.width = (state.submitted ? 100 : pct) + "%";
+}
+
+function render() {
+  setProgress();
+  if (state.step === 0) return renderIntro();
+  if (state.step === 1) return renderAbout();
+  if (state.step >= 2 && state.step < 2 + N) return renderConcept(state.step - 2);
+  renderDone();
+}
+
+function renderIntro() {
+  app.innerHTML = `
+    <p class="brand">Mother of Pearl</p>
+    <h1>New product concept survey</h1>
+    <div class="lede" style="margin-top:22px">
+      <p>Hi! Thank you for taking the time to fill out this survey 💗 We’re exploring some new product ideas and would love to hear what you think!</p>
+      <p>You’ll be shown several product concepts, each with an image and a short description, followed by a few questions. Just share your honest thoughts based on each concept.</p>
+      <p>There are no right or wrong answers, so feel free to share what you really think!</p>
+      <p>The survey will take around 10–15 minutes, and all responses will remain anonymous. Thank you for helping us! 💕</p>
+    </div>
+    <div class="nav"><button class="primary" id="next">Start the survey</button></div>`;
+  document.getElementById("next").onclick = () => go(1);
+}
+
+function renderAbout() {
+  const p = state.profile;
+  app.innerHTML = `
+    <h2>About you</h2>
+    ${choiceGroup("age", "How old are you?", AGE, p.age)}
+    ${choiceGroup("gender", "What is your gender?", GENDER, p.gender)}
+    ${choiceGroup("frequency", "How often do you use makeup?", FREQ, p.frequency)}
+    <div class="nav">
+      <button class="ghost" id="back">Back</button>
+      <button class="primary" id="next">Next</button>
+    </div>`;
+  bindInputs(v => Object.assign(state.profile, v));
+  document.getElementById("back").onclick = () => go(0);
+  document.getElementById("next").onclick = () => { if (validate()) go(2); };
+}
+
+function renderConcept(pos) {
+  const ci = state.order[pos];
+  const c = CONCEPTS[ci];
+  const a = state.answers[ci] || {};
+  const tag = `[${c.short}] `;
+  const last = pos === N - 1;
+  app.innerHTML = `
+    <p class="step-count">Product ${pos + 1} of ${N}</p>
+    <h2>${esc(c.name)}</h2>
+    <figure>
+      <a href="${c.img}" target="_blank" rel="noopener"><img src="${c.img}" alt="${esc(c.name)} concept board" loading="eager"></a>
+      <figcaption>Tap the image to see it full size.</figcaption>
+    </figure>
+    ${choiceGroup("heard", "Have you heard of this concept before?", HEARD, a.heard)}
+    ${scaleGroup("relevance", "How relevant is this product to your needs?", "Not relevant at all", "Very relevant", a.relevance)}
+    ${textGroup("why", "If this product is not relevant to you, could you tell us why? What needs or pain points does it not address?", a.why)}
+    ${scaleGroup("interest", "Regardless of its relevance to your personal needs, how interesting do you find this concept?", "Not interesting at all", "Very interesting", a.interest)}
+    ${choiceGroup("buy", "Would you consider buying this product?", BUY, a.buy)}
+    <p class="error-msg" id="send-error" role="alert"></p>
+    <div class="nav">
+      <button class="ghost" id="back">Back</button>
+      <button class="primary" id="next">${last ? "Send my answers" : "Next product"}</button>
+    </div>`;
+  bindInputs(v => { state.answers[ci] = Object.assign(state.answers[ci] || {}, v); });
+  document.getElementById("back").onclick = () => go(state.step - 1);
+  document.getElementById("next").onclick = () => {
+    if (!validate()) return;
+    if (last) submit(); else go(state.step + 1);
+  };
+}
+
+function renderDone() {
+  app.innerHTML = `<div class="done">
+    <p class="brand">Mother of Pearl</p>
+    <h1>Thank you!</h1>
+    <p>Your answers have been sent. We really appreciate your time and honest thoughts 💕</p>
+  </div>`;
+}
+
+function bindInputs(onChange) {
+  app.querySelectorAll("input, textarea").forEach(el => {
+    const handler = () => {
+      const v = {}; v[el.name] = el.value;
+      onChange(v); save();
+      const q = el.closest(".q"); if (q) q.classList.remove("missing");
+    };
+    el.addEventListener("change", handler);
+    if (el.tagName === "TEXTAREA") el.addEventListener("input", handler);
+  });
+}
+
+function validate() {
+  let first = null;
+  app.querySelectorAll('.q[data-required="1"]').forEach(q => {
+    const ok = q.querySelector("input:checked");
+    q.classList.toggle("missing", !ok);
+    if (!ok && !first) first = q;
+  });
+  if (first) { first.scrollIntoView({ behavior: "smooth", block: "center" }); first.querySelector("input").focus({ preventScroll: true }); }
+  return !first;
+}
+
+function go(step) {
+  state.step = step; save(); render();
+  window.scrollTo({ top: 0 });
+  const h = app.querySelector("h1, h2"); if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+}
+
+async function submit() {
+  const btn = document.getElementById("next");
+  const err = document.getElementById("send-error");
+  err.style.display = "none";
+  if (!SINK.action || SINK.action.indexOf("PASTE") === 0) {
+    err.textContent = "This survey isn’t connected to its response sheet yet. Paste the SINK block into index.html.";
+    err.style.display = "block"; return;
+  }
+  btn.disabled = true; btn.textContent = "Sending…";
+
+  const f = SINK.fields;
+  const body = new URLSearchParams();
+  const put = (k, v) => { if (f[k] && v !== undefined && v !== null && v !== "") body.append(f[k], String(v)); };
+  put("respondent_id", state.id);
+  put("started_at", state.started);
+  put("submitted_at", new Date().toISOString());
+  put("concept_order", state.order.map(i => CONCEPTS[i].short).join(" > "));
+  put("age", state.profile.age);
+  put("gender", state.profile.gender);
+  put("frequency", state.profile.frequency);
+  state.order.forEach((ci, pos) => {
+    const a = state.answers[ci] || {};
+    put(`c${ci}.position`, pos + 1);
+    put(`c${ci}.heard`, a.heard);
+    put(`c${ci}.relevance`, a.relevance);
+    put(`c${ci}.why`, a.why);
+    put(`c${ci}.interest`, a.interest);
+    put(`c${ci}.buy`, a.buy);
+  });
+
+  try {
+    await fetch(SINK.action, { method: "POST", mode: "no-cors", body });
+    // Clear this device's draft so the link starts fresh next time (no duplicate blocking).
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    state.submitted = true;
+    setProgress(); renderDone(); window.scrollTo({ top: 0 });
+  } catch (e) {
+    btn.disabled = false; btn.textContent = "Send my answers";
+    err.textContent = "Your answers couldn’t be sent. Check your internet connection, then tap Send my answers again. Nothing has been lost.";
+    err.style.display = "block";
+  }
+}
+
+render();
+</script>
+</body>
+</html>
